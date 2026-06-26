@@ -1,173 +1,305 @@
 #  Urban Water Digital Twin — MLOps Project
 
-> AI-powered predictive analytics and real-time simulation for urban water supply management across Bengaluru's 198+ wards.
+> AI-powered predictive analytics, hydraulic simulation, and digital twin technology for intelligent urban water supply management across Bengaluru's 198+ wards.
 
-**Live Demo:** [kzamlg2zfzgu2eqh6jv6ss.streamlit.app](https://kzamlg2zfzgu2eqh6jv6ss.streamlit.app)
+###  Live Demo
+
+https://kzamlg2zfzgu2eqh6jv6ss.streamlit.app
+
+---
+
+##  Overview
+
+Urban Water Digital Twin is an end-to-end MLOps project that combines Machine Learning, Digital Twin Simulation, Hydraulic Modeling, and Water Redistribution Analytics to help city administrators monitor, predict, and optimize urban water distribution.
+
+The platform enables real-time scenario analysis, demand forecasting, hydraulic pressure simulation, and automated redistribution planning for surplus and deficit wards.
 
 ---
 
 ##  Problem Statement
 
-Urban water distribution in Bengaluru faces critical imbalances across 198+ wards — supply shortages, inaccurate demand forecasting, and no real-time decision support leave authorities reacting to crises instead of predicting them.
+Managing water distribution across Bengaluru's 198+ wards is challenging due to:
 
-##  Solution
+* Uneven water supply and demand
+* Seasonal fluctuations
+* Lack of predictive planning
+* Delayed response to shortages
+* Absence of real-time decision support systems
 
-An interactive **Digital Twin** that combines Machine Learning, discrete-event simulation, and hydraulic modelling into a single deployed web application. Decision-makers can run what-if scenarios, simulate 24-hour supply/demand cycles, model pipe-network pressure, and auto-generate optimal water redistribution plans.
+Traditional systems react to shortages after they occur rather than predicting them beforehand.
 
 ---
 
-##  Features
+##  Solution
 
-| Module | Description |
-|---|---|
-| **What-If Simulation** | Adjust supply/demand sliders and get instant ML-predicted demand gap |
-| **SimPy 24-Hour Twin** | Discrete-event simulation of hour-by-hour water system behaviour |
-| **WNTR Hydraulic Sim** | Pipe network pressure and flow modelling for each ward |
-| **Redistribution Engine** | Greedy algorithm identifies surplus wards and diverts water to deficit wards |
-| **Ward Analytics** | Monthly supply vs demand charts, seasonal imbalance breakdown |
+This project creates an AI-powered Urban Water Digital Twin that:
+
+* Predicts future supply-demand gaps using Machine Learning
+* Simulates 24-hour water distribution behavior
+* Models hydraulic network pressure using WNTR
+* Identifies surplus and deficit wards automatically
+* Generates optimal water redistribution plans
+* Provides interactive analytics dashboards
+
+---
+
+##  Key Features
+
+###  Ward Analytics Dashboard
+
+* Ward-wise population and connection statistics
+* Supply-demand ratio monitoring
+* Monthly water distribution trends
+* Seasonal imbalance analysis
+
+###  What-If Simulation Engine
+
+* Interactive supply and demand controls
+* Real-time prediction of water shortages
+* Before vs After comparison dashboards
+* Dynamic Supply/Demand ratio analysis
+
+###  SimPy Digital Twin
+
+* 24-hour discrete-event simulation
+* Critical, Warning, and Normal hour detection
+* Hourly demand and supply forecasting
+* Real-world uncertainty simulation
+
+###  WNTR Hydraulic Simulation
+
+* Water network pressure estimation
+* Flow analysis
+* Demand satisfaction metrics
+* Physical shortage identification
+
+###  Water Redistribution Engine
+
+* Detects surplus and deficit wards
+* Generates diversion plans automatically
+* Calculates diversion coverage percentages
+* Optimizes water allocation
 
 ---
 
 ##  Technology Stack
 
-| Category | Tools |
-|---|---|
-| **ML Model** | Random Forest Regressor (scikit-learn) |
-| **Simulation** | SimPy (discrete-event), WNTR (hydraulic network) |
-| **Data** | Pandas, NumPy |
-| **Visualisation** | Plotly, Streamlit |
-| **Deployment** | Streamlit Community Cloud (MLOps) |
-| **Explainability** | SHAP |
+| Category         | Technologies                |
+| ---------------- | --------------------------- |
+| Programming      | Python                      |
+| Machine Learning | Scikit-Learn, Random Forest |
+| Data Processing  | Pandas, NumPy               |
+| Simulation       | SimPy, WNTR                 |
+| Explainability   | SHAP                        |
+| Visualization    | Plotly                      |
+| Dashboard        | Streamlit                   |
+| Deployment       | Streamlit Community Cloud   |
+| Version Control  | Git & GitHub                |
 
 ---
 
-##  Dataset
+##  Dataset Information
 
-- **4,800+ records** across 198+ Bengaluru wards
-- Ward-level BBMP water supply and consumption data
-- Features: `Ward_Number`, `Month`, `Quarter`, `Season`, `Population`, `Connections`, `Connection_Density`, `Consumption`, `Supply`, `Per_Capita_Consumption`, `Supply_Per_Connection`, `Supply_Demand_Ratio`, `Imbalance_Score`, `Demand_Gap`
-- Anomaly detection: records where Consumption > mean + 2×std are flagged and excluded from training
+### Dataset Size
+
+* 4,800+ records
+* 198+ Bengaluru wards
+
+### Features
+
+* Ward_Number
+* Month
+* Quarter
+* Season
+* Population
+* Connections
+* Connection_Density
+* Consumption
+* Supply
+* Per_Capita_Consumption
+* Supply_Per_Connection
+* Supply_Demand_Ratio
+* Imbalance_Score
+* Demand_Gap
+
+### Target Variable
+
+**Demand_Gap (MLD)**
+
+* Positive Value → Water Shortage
+* Negative Value → Water Surplus
 
 ---
 
-##  ML Pipeline
+##  Machine Learning Pipeline
 
+```text
+Raw Data
+   ↓
+Feature Engineering
+   ↓
+Anomaly Detection
+   ↓
+Data Cleaning
+   ↓
+Random Forest Training
+   ↓
+Demand Gap Prediction
+   ↓
+Interactive Dashboard
 ```
-Raw Data → Feature Engineering → Anomaly Detection → Train/Filter
-       → RandomForestRegressor(n_estimators=100) → Demand Gap Prediction
-```
 
-**Target variable:** `Demand_Gap` (MLD) — positive = shortage, negative = surplus
+### Model Used
 
-**Features used for prediction:**
+RandomForestRegressor
+
+### Prediction Features
+
 ```python
-['Ward_Number', 'Month', 'Quarter', 'Population', 'Connections',
- 'Connection_Density', 'Consumption', 'Supply',
- 'Per_Capita_Consumption', 'Supply_Per_Connection', 'Supply_Demand_Ratio']
+[
+ 'Ward_Number',
+ 'Month',
+ 'Quarter',
+ 'Population',
+ 'Connections',
+ 'Connection_Density',
+ 'Consumption',
+ 'Supply',
+ 'Per_Capita_Consumption',
+ 'Supply_Per_Connection',
+ 'Supply_Demand_Ratio'
+]
 ```
 
 ---
 
 ##  Project Structure
 
-```
+```text
 urban-water-digital-twin/
 │
-├── app.py                          # Main Streamlit app (latest version)
-├── water_dataset_ml_ready.csv      # ML-ready dataset
-├── digital_twin_final.ipynb        # EDA + model training notebook
-├── requirements.txt                # Python dependencies
-└── README.md
+├── app.py
+├── digital_twin_final.ipynb
+├── water_dataset_ml_ready.csv
+├── requirements.txt
+├── README.md
+│
+└── dashboard-images/
+    ├── 01-dashboard-home.jpeg
+    ├── 02-before-after-comparison.jpeg
+    ├── 03-supply-demand-ratio-analysis.jpeg
+    ├── 04-what-if-simulation.jpeg
+    ├── 05-water-redistribution-engine.jpeg
+    ├── 06-simpy-simulation-log.jpeg
+    ├── 07-simpy-digital-twin.jpeg
+    ├── 08-simpy-24hour-simulation-log.jpeg
+    ├── 09-wntr-hydraulic-simulation.jpeg
+    ├── 10-surplus-to-deficit-diversion.jpeg
+    └── 11-diversion-coverage-analysis.jpeg
 ```
 
 ---
 
-##  Setup & Run Locally
+##  Dashboard Screenshots
+
+### Dashboard Home
+
+![Dashboard Home](dashboard-images/01-dashboard-home.jpeg)
+
+### Before vs After Comparison
+
+![Before After Comparison](dashboard-images/02-before-after-comparison.jpeg)
+
+### Supply Demand Ratio Analysis
+
+![Supply Demand Ratio](dashboard-images/03-supply-demand-ratio-analysis.jpeg)
+
+### What-If Simulation
+
+![What If Simulation](dashboard-images/04-what-if-simulation.jpeg)
+
+### Water Redistribution Engine
+
+![Water Redistribution](dashboard-images/05-water-redistribution-engine.jpeg)
+
+### SimPy Simulation Log
+
+![SimPy Log](dashboard-images/06-simpy-simulation-log.jpeg)
+
+### SimPy Digital Twin
+
+![SimPy Twin](dashboard-images/07-simpy-digital-twin.jpeg)
+
+### 24-Hour Simulation Log
+
+![24 Hour Simulation](dashboard-images/08-simpy-24hour-simulation-log.jpeg)
+
+### WNTR Hydraulic Simulation
+
+![WNTR Simulation](dashboard-images/09-wntr-hydraulic-simulation.jpeg)
+
+### Surplus to Deficit Diversion
+
+![Diversion Plan](dashboard-images/10-surplus-to-deficit-diversion.jpeg)
+
+### Diversion Coverage Analysis
+
+![Coverage Analysis](dashboard-images/11-diversion-coverage-analysis.jpeg)
+
+---
+
+##  Installation
+
+### Clone Repository
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/<your-username>/urban-water-digital-twin.git
+git clone https://github.com/avyshnavi45/urban-water-digital-twin.git
 cd urban-water-digital-twin
+```
 
-# 2. Install dependencies
+### Install Dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
-# 3. Place the dataset in the same folder as app.py
-#    File: water_dataset_ml_ready.csv
+### Run Application
 
-# 4. Run the app
+```bash
 streamlit run app.py
 ```
 
 ---
 
-##  Requirements
+##  Deployment
 
-```
-streamlit
-pandas
-numpy
-scikit-learn
-plotly
-simpy
-wntr
-shap
-matplotlib
-seaborn
-```
+The application is deployed using Streamlit Community Cloud.
 
-Install all at once:
-```bash
-pip install streamlit pandas numpy scikit-learn plotly simpy wntr shap matplotlib seaborn
-```
+### Live Application
 
----
+https://kzamlg2zfzgu2eqh6jv6ss.streamlit.app
 
-##  Simulations Explained
+### Deployment Features
 
-### 1. What-If Engine
-Uses the trained Random Forest model to instantly predict the demand gap when you adjust supply or demand sliders. Shows before/after comparison with a gauge chart.
-
-### 2. SimPy 24-Hour Twin
-Runs 24 discrete hourly steps. Each step adds random noise (±10 MLD supply, ±20 MLD demand) to simulate real-world variability. Classifies each hour as Critical / Warning / Normal.
-
-### 3. WNTR Hydraulic Simulation
-Models a simplified 3-node pipe network (reservoir → entry junction → two zone junctions) and reports average pressure (metres) and flow (MLD). Falls back to ratio-based estimates if WNTR is unavailable.
-
-### 4. Water Redistribution Engine
-- Identifies surplus wards (Supply > Demand) and deficit wards (Demand > Supply) using the latest data per ward
-- Uses a greedy matching algorithm to divert surplus water to deficit wards in descending order of severity
-- Reports diversion plan with coverage % per deficit ward
-
----
-
-##  Screenshots
-
-> Add screenshots of the dashboard, simulation results, and redistribution plan here.
-
----
-
-##  Deployment (MLOps)
-
-This project is deployed as a live public app on **Streamlit Community Cloud**:
-
-- Auto-redeploys on every `git push` to `main`
-- No server management required
-- Publicly accessible URL
-
-**Live URL:** [kzamlg2zfzgu2eqh6jv6ss.streamlit.app](https://kzamlg2zfzgu2eqh6jv6ss.streamlit.app)
+* Automated GitHub integration
+* Automatic redeployment after every push
+* Public cloud hosting
+* Zero infrastructure management
 
 ---
 
 ##  Author
 
-**A.Vyshnavi**
-- GitHub: [@your-username](https://github.com/avyshnavi45)
-- LinkedIn: [linkedin.com/in/your-profile](https://www.linkedin.com/in/vyshnavi-vyshnavi-359882360/)
+### A. Vyshnavi
+
+GitHub:
+https://github.com/avyshnavi45
+
+LinkedIn:
+https://www.linkedin.com/in/vyshnavi-vyshnavi-359882360/
 
 ---
 
-## License
+##  License
 
-This project is open-source and available under the [MIT License](LICENSE).
-
+This project is licensed under the MIT License.
